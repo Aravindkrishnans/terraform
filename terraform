@@ -67,7 +67,7 @@ function fedora {
 
 }
 
-##install in Amazon linux
+##install in Amazon_linux servers
 
 function amazon {
 
@@ -82,9 +82,6 @@ function amazon {
 			sudo unzip terraform.zip -d /usr/local/bin/
 			terraform -help
 			terraform -version
-			#sudo yum install -y yum-utils
-			#sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
-			#sudo yum -y install terraform
 	else
 		echo "Thank you for using the script"
         fi
