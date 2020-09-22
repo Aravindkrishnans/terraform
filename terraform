@@ -1,0 +1,144 @@
+#!/bin/bash
+
+clear
+##Operating system info
+OS=`cat /etc/os-release | grep -i PRETTY_NAME | awk -F= '{print $2}'`
+
+
+##install in ubuntu servers
+function ubuntu {
+
+	ls $(sed 's/:/\n/g' <<< $PATH) | grep terraform &>/dev/null
+		if [ $(echo $? == 0) ]
+		then
+		echo "You have terraform installed"
+		elif [ $(echo $? == 1) ]
+		then
+		curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+		sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+		sudo apt-get update && sudo apt-get install terraform
+		terraform -help
+		else
+		echo " Thank you for using the script "
+		fi
+
+}
+
+##install in centos and Rhel servers
+
+function centos {
+
+	ls $(sed 's/:/\n/g' <<< $PATH) | grep terraform &>/dev/null
+	
+	if [ $(echo $? == 0) ]
+                then
+                echo "You have terraform installed"
+                elif [ $(echo $? == 1) ]
+                then
+		sudo yum install -y yum-utils 
+		sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
+		sudo yum -y install terraform
+		terraform -help
+		else
+		echo "Thank you for using the script"
+	fi
+
+}
+
+
+##install in fedora servers
+
+function fedora {
+
+	 ls $(sed 's/:/\n/g' <<< $PATH) | grep terraform &>/dev/null
+
+        if [ $(echo $? == 0) ]
+                then
+                echo "You have terraform installed"
+                elif [ $(echo $? == 1) ]
+                then
+		sudo dnf install -y dnf-plugins-core
+		sudo dnf config-manager --add-repo https://rpm.releases.hashicorp.com/fedora/hashicorp.repo
+		sudo dnf -y install terraform
+		terraform -help
+                else
+                echo "Thank you for using the script"
+        fi
+
+}
+
+##install in Amazon linux
+
+function amazon {
+
+	 ls $(sed 's/:/\n/g' <<< $PATH) | grep terraform &>/dev/null
+
+        if [ $(echo $? == 0) ]
+                then
+                echo "You have terraform installed"
+        elif [ $(echo $? == 1) ]
+                then
+			curl "https://releases.hashicorp.com/terraform/0.13.3/terraform_0.13.3_linux_amd64.zip" -o "terraform.zip"
+			sudo unzip terraform.zip -d /usr/local/bin/
+			terraform -help
+			terraform -version
+			#sudo yum install -y yum-utils
+			#sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+			#sudo yum -y install terraform
+	else
+		echo "Thank you for using the script"
+        fi
+
+}
+
+
+
+##install in suse servers
+
+function suse {
+	 ls $(sed 's/:/\n/g' <<< $PATH) | grep terraform &>/dev/null
+
+        if [ $(echo $? == 0) ]
+                then
+                echo "You have terraform installed"
+        elif [ $(echo $? == 1) ]
+                then
+                curl "https://releases.hashicorp.com/terraform/0.13.3/terraform_0.13.3_linux_amd64.zip" -o "terraform.zip"
+                sudo unzip terraform.zip -d /usr/local/bin/
+                terraform -help
+	else
+		echo "Thank you for using the script"
+        fi
+
+}
+
+
+function main {
+
+case $OS in
+	*"Debian"* | *"Ubuntu"*)
+	ubuntu
+	;;
+
+	*"Fedora"*)
+	fedora
+	;;
+
+	*"Red Hat"*)
+	centos
+	;;
+
+	*"CentOS"*)
+	centos
+	;;
+	*"Amazon"*)
+	amazon
+	;;
+	*"SUSE"*)
+	suse
+	;;
+esac
+
+}
+
+main
